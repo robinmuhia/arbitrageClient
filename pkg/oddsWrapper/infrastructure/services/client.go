@@ -15,11 +15,10 @@ import (
 
 // oddsoddsAPIHTTPClient instantiates a client to call the odds API url
 type oddsAPIHTTPClient struct {
-	client *http.Client
+	client  *http.Client
 	baseURL string
-	apiKey string
+	apiKey  string
 }
-
 
 // ArbClient implements methods intended to be used by oddsAPIHTTPClient
 type ArbClient interface {
@@ -28,8 +27,8 @@ type ArbClient interface {
 
 // OddsParams represent the parameters required to query for specific odds
 type OddsParams struct {
-	Region string
-	Markets string 
+	Region     string
+	Markets    string
 	OddsFormat string
 	DateFormat string
 }
@@ -41,7 +40,7 @@ func NewServiceOddsAPI(baseURL string, apiKey string) *oddsAPIHTTPClient {
 			Timeout: time.Second * 10,
 		},
 		baseURL: baseURL,
-		apiKey: apiKey,
+		apiKey:  apiKey,
 	}
 }
 
@@ -94,18 +93,19 @@ func (s oddsAPIHTTPClient) getSports(ctx context.Context) ([]domain.Sport, error
 	if err := json.NewDecoder(resp.Body).Decode(&sports); err != nil {
 		return nil, fmt.Errorf("failed to get sports: %w", err)
 	}
+
 	return sports, nil
 }
 
 // getOdd returns all odds from one sport
-func (s oddsAPIHTTPClient) getOdd(ctx context.Context, oddParams OddsParams, sport domain.Sport, wg *sync.WaitGroup) ([]domain.Odds, error){
+func (s oddsAPIHTTPClient) getOdd(ctx context.Context, oddParams OddsParams, sport domain.Sport, wg *sync.WaitGroup) ([]domain.Odds, error) {
 	defer wg.Done()
 
 	urlPath := fmt.Sprintf("%s/%s/%s/%s", s.baseURL, enums.Sport.String(), sport.Key, enums.Odds.String())
 
 	queryParams := url.Values{}
 	queryParams.Add(enums.ApiKey.String(), s.apiKey)
-	queryParams.Add(enums.Region.String(),oddParams.Region)
+	queryParams.Add(enums.Region.String(), oddParams.Region)
 	queryParams.Add(enums.Markets.String(), oddParams.Markets)
 	queryParams.Add(enums.OddsFormat.String(), oddParams.OddsFormat)
 	queryParams.Add(enums.DateFormat.String(), oddParams.DateFormat)
@@ -125,10 +125,9 @@ func (s oddsAPIHTTPClient) getOdd(ctx context.Context, oddParams OddsParams, spo
 	if err := json.NewDecoder(resp.Body).Decode(&odds); err != nil {
 		return nil, fmt.Errorf("failed to decode odds data for %s: %w", sport.Title, err)
 	}
+
 	return odds, nil
 }
-
-
 
 // GetOdds returns a list of all available odds given various parameters across all sports
 func (s oddsAPIHTTPClient) GetAllOdds(ctx context.Context, oddsParams OddsParams) ([]domain.Odds, error) {
@@ -145,19 +144,22 @@ func (s oddsAPIHTTPClient) GetAllOdds(ctx context.Context, oddsParams OddsParams
 
 	var allOdds []domain.Odds
 
-	for _, sport := range sports{
-		if sport.Active{
+	for _, sport := range sports {
+		if sport.Active {
 			wg.Add(1)
-			go func(){
-				odds, err := s.getOdd(ctx,oddsParams,sport, &wg)
+
+			go func() {
+				odds, err := s.getOdd(ctx, oddsParams, sport, &wg)
 				if err == nil {
 					mu.Lock()
 					allOdds = append(allOdds, odds...)
-					mu.Unlock()					
+					mu.Unlock()
 				}
 			}()
 		}
-		<- ticker.C // waits a second to send next goroutine, intended to prevent ddosing and rate limiting 
+
+		<-ticker.C // waits a second to send next goroutine, intended to prevent ddosing and rate limiting
 	}
+
 	return allOdds, nil
 }

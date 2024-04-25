@@ -8,9 +8,9 @@ type Outcome struct {
 
 // Market represents the bookmarkers' odds for a game
 type Market struct {
-	Key         string    `json:"key"`
-	LastUpdate  string    `json:"last_update"`
-	Outcomes    []Outcome `json:"outcomes"`
+	Key        string    `json:"key"`
+	LastUpdate string    `json:"last_update"`
+	Outcomes   []Outcome `json:"outcomes"`
 }
 
 // Bookmaker describes the bookmarker such as bet365
