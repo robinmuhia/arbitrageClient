@@ -1,0 +1,44 @@
+run:
+  timeout: 10m
+  concurrency: 4
+
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - typecheck
+    - unused
+    - gosec
+    - misspell
+    - revive
+    - funlen
+    - gofmt
+    - unparam
+    - errorlint
+    - bodyclose
+    - gocritic
+    - nilerr
+    - ireturn
+    - importas
+    - wsl
+    - exportloopref
+    - nilerr
+    - makezero
+    - reassign
+
+linters-settings:
+  staticcheck:
+    checks: ["all"]
+  funlen:
+    lines: -1
+    statements: -1
+  revive:
+    rules:
+      - name: unused-parameter
+        severity: warning
+        disabled: true
+        arguments:
+          - allowRegex: "^_"
