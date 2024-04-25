@@ -4,7 +4,7 @@ type endpoint string
 
 const (
 	Sport endpoint = "sports"
-	Odds endpoint = "odds"
+	Odds  endpoint = "odds"
 )
 
 func (e endpoint) String() string {
