@@ -81,10 +81,12 @@ Any optimization techniques are appreciated.
 type ThreeOddsArb struct {
 	Title    string
 	Home     string // home bookmarker
-	Draw     string // draw bookmarker
-	Away     string // away bookmarker
 	HomeOdds float64 // home bookmarker odds
+	HomeStake float64 // home stake you should place
+	Draw     string // draw bookmarker
 	DrawOdds float64 // draw bookmarker ddds
+	DrawStake float64 // draw stake you should place
+	Away     string // away bookmarker
 	AwayOdds float64 // away book marker odds
 	GameType string
 	League   string
@@ -97,9 +99,11 @@ type ThreeOddsArb struct {
 type TwoOddsArb struct {
 	Title    string
 	Home     string // home bookmarker
-	Away     string // away bookmarker
 	HomeOdds float64 // home bookmarker odds
+	HomeStake float64 // home stake you should place
+	Away     string // away bookmarker
 	AwayOdds float64 // away book marker odds
+	AwayStake float64 // away stake you should place
 	GameType string
 	League   string
 	Profit   float64

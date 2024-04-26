@@ -22,15 +22,17 @@ func (us *UseCasesArbsImpl) composeTwoArbsBet(odd domain.Odds, i int, j int) (do
 	if arb < 1.0 {
 		profit := (1 - arb) * 100
 		twowayArb := domain.TwoOddsArb{
-			Title:    fmt.Sprintf("%s - %s", odd.HomeTeam, odd.AwayTeam),
-			Home:     odd.Bookmakers[i].Title,
-			Away:     odd.Bookmakers[j].Title,
-			HomeOdds: homeOdd,
-			AwayOdds: awayOdd,
-			GameType: odd.SportKey,
-			League:   odd.SportTitle,
-			Profit:   profit,
-			GameTime: odd.CommenceTime,
+			Title:     fmt.Sprintf("%s - %s", odd.HomeTeam, odd.AwayTeam),
+			Home:      odd.Bookmakers[i].Title,
+			HomeOdds:  homeOdd,
+			HomeStake: 1 / homeOdd,
+			Away:      odd.Bookmakers[j].Title,
+			AwayOdds:  awayOdd,
+			AwayStake: 1 / awayOdd,
+			GameType:  odd.SportKey,
+			League:    odd.SportTitle,
+			Profit:    profit,
+			GameTime:  odd.CommenceTime,
 		}
 
 		return twowayArb, true
@@ -49,17 +51,20 @@ func (us *UseCasesArbsImpl) composeThreeArbsBet(odd domain.Odds, i int, j int, k
 	if arb < 1.0 {
 		profit := (1 - arb) * 100
 		threewayArb := domain.ThreeOddsArb{
-			Title:    fmt.Sprintf("%s - %s", odd.HomeTeam, odd.AwayTeam),
-			Home:     odd.Bookmakers[i].Title,
-			Away:     odd.Bookmakers[j].Title,
-			Draw:     odd.Bookmakers[k].Title,
-			HomeOdds: homeOdd,
-			AwayOdds: awayOdd,
-			DrawOdds: drawOdd,
-			GameType: odd.SportKey,
-			League:   odd.SportTitle,
-			Profit:   profit,
-			GameTime: odd.CommenceTime,
+			Title:     fmt.Sprintf("%s - %s", odd.HomeTeam, odd.AwayTeam),
+			Home:      odd.Bookmakers[i].Title,
+			HomeOdds:  homeOdd,
+			HomeStake: 1 / homeOdd,
+			Away:      odd.Bookmakers[j].Title,
+			AwayOdds:  awayOdd,
+			AwayStake: 1 / awayOdd,
+			Draw:      odd.Bookmakers[k].Title,
+			DrawOdds:  drawOdd,
+			DrawStake: 1 / drawOdd,
+			GameType:  odd.SportKey,
+			League:    odd.SportTitle,
+			Profit:    profit,
+			GameTime:  odd.CommenceTime,
 		}
 
 		return threewayArb, true
