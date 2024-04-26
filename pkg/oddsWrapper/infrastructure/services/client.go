@@ -6,11 +6,17 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"sync"
 	"time"
 
 	"github.com/robinmuhia/arbitrageClient/pkg/oddsWrapper/application/enums"
 	"github.com/robinmuhia/arbitrageClient/pkg/oddsWrapper/domain"
+)
+
+var (
+	baseURL = os.Getenv(enums.BaseURL.String())
+	apiKey  = os.Getenv(enums.ApiKeyEnv.String())
 )
 
 // oddsoddsAPIHTTPClient instantiates a client to call the odds API url
@@ -20,7 +26,7 @@ type oddsAPIHTTPClient struct {
 	apiKey  string
 }
 
-// ArbClient implements methods intended to be used by oddsAPIHTTPClient
+// ArbClient implements methods intended to be exposed by the oddsHTTPClient
 type ArbClient interface {
 	GetAllOdds(ctx context.Context, oddsParams OddsParams) ([]domain.Odds, error)
 }
@@ -34,14 +40,22 @@ type OddsParams struct {
 }
 
 // NewServiceOddsAPI returns a new instance of an OddsAPI service
-func NewServiceOddsAPI(baseURL string, apiKey string) *oddsAPIHTTPClient {
+func NewServiceOddsAPI() (*oddsAPIHTTPClient, error) {
+	if baseURL == "" {
+		return nil, fmt.Errorf("empty env variables, %s", enums.BaseURL.String())
+	}
+
+	if apiKey == "" {
+		return nil, fmt.Errorf("empty env variables, %s", enums.ApiKeyEnv.String())
+	}
+
 	return &oddsAPIHTTPClient{
 		client: &http.Client{
 			Timeout: time.Second * 10,
 		},
 		baseURL: baseURL,
 		apiKey:  apiKey,
-	}
+	}, nil
 }
 
 // makeRequest calls the Odds API endpoint
@@ -160,6 +174,10 @@ func (s oddsAPIHTTPClient) GetAllOdds(ctx context.Context, oddsParams OddsParams
 
 		<-ticker.C // waits a second to send next goroutine, intended to prevent ddosing and rate limiting
 	}
+
+	wg.Wait()
+
+	ticker.Stop()
 
 	return allOdds, nil
 }
