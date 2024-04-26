@@ -5,10 +5,13 @@ package domain
 type ThreeOddsArb struct {
 	Title    string
 	Home     string
-	Draw     string
-	Away     string
 	HomeOdds float64
+	HomeStake float64
+	Draw     string
 	DrawOdds float64
+	DrawStake float64
+	Away     string
+	AwayStake float64
 	AwayOdds float64
 	GameType string
 	League   string
@@ -21,8 +24,10 @@ type ThreeOddsArb struct {
 type TwoOddsArb struct {
 	Title    string
 	Home     string
-	Away     string
 	HomeOdds float64
+	HomeStake float64
+	Away     string
+	AwayStake float64
 	AwayOdds float64
 	GameType string
 	League   string
