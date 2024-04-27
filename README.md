@@ -14,9 +14,9 @@ To learn more about arbitrage betting, read [this](https://www.sbo.net/strategy/
 
 ### Usage
 
-We currently only implement version 4 of the Odds API
+We currently only support version 4 of the Odds API and odds format of decimal.
 
-Get an odds api key from [Sport Odds API](https://the-odds-api.com/)\
+Get an odds api key from [Sport Odds API](https://the-odds-api.com/)
 
 You will need the following env variables and name them as is;
 
