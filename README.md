@@ -71,7 +71,7 @@ func main() {
 
 ### Output
 
-Average response time for the 95th percentile is around 1 minute 43 seconds. So you can expect to receive a response within that time 95%
+Average response time for the 95th percentile is around 53 seconds. So you can expect to receive a response within that time 95%
 of the time. This is because we call the api to get all sports with their odds then iteratively loop through all possible permutations.
 Any optimization techniques are appreciated.
 
