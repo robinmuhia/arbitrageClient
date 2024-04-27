@@ -41,7 +41,7 @@ func (us *UseCasesArbsImpl) composeTwoArbsBet(odd domain.Odds, i int, j int) (do
 	return domain.TwoOddsArb{}, false
 }
 
-// composeThreeArbsBet process an Odd to check if an arbitrage oppurtunity exists
+// composeThreeArbsBet processes an Odd to check if an arbitrage oppurtunity exists
 func (us *UseCasesArbsImpl) composeThreeArbsBet(odd domain.Odds, i int, j int, k int) (domain.ThreeOddsArb, bool) {
 	homeOdd := odd.Bookmakers[i].Markets[0].Outcomes[0].Price
 	awayOdd := odd.Bookmakers[j].Markets[0].Outcomes[1].Price

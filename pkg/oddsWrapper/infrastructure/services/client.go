@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -164,11 +165,13 @@ func (s oddsAPIHTTPClient) GetAllOdds(ctx context.Context, oddsParams OddsParams
 
 			go func() {
 				odds, err := s.getOdd(ctx, oddsParams, sport, &wg)
-				if err == nil {
-					mu.Lock()
-					allOdds = append(allOdds, odds...)
-					mu.Unlock()
+				if err != nil {
+					log.Print(err.Error())
 				}
+
+				mu.Lock()
+				allOdds = append(allOdds, odds...)
+				mu.Unlock()
 			}()
 		}
 
