@@ -1,7 +1,7 @@
 # ArbitrageClient
 
 ![Linting and Tests](https://github.com/robinmuhia/arbitrageClient/actions/workflows/ci.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github.com/robinmuhia/arbitrageClientactions/badge.svg?branch=main)](https://coveralls.io/github.com/robinmuhia/arbitrageClient?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/robinmuhia/arbitrageClient/badge.svg?branch=main)](https://coveralls.io/github/robinmuhia/arbitrageClient?branch=main)
 
 ### Domain
 
