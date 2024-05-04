@@ -167,11 +167,11 @@ func (s oddsAPIHTTPClient) GetAllOdds(ctx context.Context, oddsParams OddsParams
 				odds, err := s.getOdd(ctx, oddsParams, sport, &wg)
 				if err != nil {
 					log.Print(err.Error())
+				} else {
+					mu.Lock()
+					allOdds = append(allOdds, odds...)
+					mu.Unlock()
 				}
-
-				mu.Lock()
-				allOdds = append(allOdds, odds...)
-				mu.Unlock()
 			}()
 		}
 
