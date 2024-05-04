@@ -78,7 +78,8 @@ func (us *UseCasesArbsImpl) checkIfMarketHasEnoughGames(bookmarker domain.Bookma
 	return len(bookmarker.Markets) >= 1
 }
 
-func (us *UseCasesArbsImpl) findPossibleArbOppurtunity(odd domain.Odds,
+// findPossibleArbOppurtunity finds possible arbs and sends them over a channel
+func (us *UseCasesArbsImpl) findPossibleArbOpportunity(odd domain.Odds,
 	threeOddsCh chan<- domain.ThreeOddsArb,
 	twoOddsCh chan<- domain.TwoOddsArb,
 	wg *sync.WaitGroup) {
@@ -123,6 +124,7 @@ func (us *UseCasesArbsImpl) findPossibleArbOppurtunity(odd domain.Odds,
 	}
 }
 
+// GetArbs gets all possible arbitrage opportunities.
 func (us *UseCasesArbsImpl) GetArbs(ctx context.Context, oddsParams services.OddsParams) ([]domain.ThreeOddsArb, []domain.TwoOddsArb, error) {
 	odds, err := us.OddsApiClient.GetAllOdds(ctx, oddsParams)
 	if err != nil {
@@ -145,7 +147,7 @@ func (us *UseCasesArbsImpl) GetArbs(ctx context.Context, oddsParams services.Odd
 	for _, odd := range odds {
 		wg.Add(1)
 
-		go us.findPossibleArbOppurtunity(odd, threeOddsCh, twoOddsCh, &wg)
+		go us.findPossibleArbOpportunity(odd, threeOddsCh, twoOddsCh, &wg)
 	}
 
 	// Close the channels once all goroutines finish processing

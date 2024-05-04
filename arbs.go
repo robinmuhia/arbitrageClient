@@ -27,6 +27,7 @@ func init() {
 	client = svc
 }
 
+// GetAllArbs returns all possible arbitrage opportunities from the odds API.
 func GetAllArbs(ctx context.Context, arbParams ArbsParams) ([]domain.ThreeOddsArb, []domain.TwoOddsArb, error) {
 	us := arbs.UseCasesArbsImpl{
 		OddsApiClient: client,
