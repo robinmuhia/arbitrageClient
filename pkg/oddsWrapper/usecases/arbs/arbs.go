@@ -13,7 +13,7 @@ type UseCasesArbsImpl struct {
 	OddsApiClient services.ArbClient
 }
 
-// composeTwoArbsBet process an Odd to check if an arbitrage oppurtunity exists
+// composeTwoArbsBet processes an Odd with two markets to check if an arbitrage oppurtunity exists
 func (us *UseCasesArbsImpl) composeTwoArbsBet(odd domain.Odds, i int, j int) (domain.TwoOddsArb, bool) {
 	homeOdd := odd.Bookmakers[i].Markets[0].Outcomes[0].Price
 	awayOdd := odd.Bookmakers[j].Markets[0].Outcomes[1].Price
@@ -41,7 +41,7 @@ func (us *UseCasesArbsImpl) composeTwoArbsBet(odd domain.Odds, i int, j int) (do
 	return domain.TwoOddsArb{}, false
 }
 
-// composeThreeArbsBet processes an Odd to check if an arbitrage oppurtunity exists
+// composeThreeArbsBet processes an Odd with three odds to check if an arbitrage oppurtunity exists
 func (us *UseCasesArbsImpl) composeThreeArbsBet(odd domain.Odds, i int, j int, k int) (domain.ThreeOddsArb, bool) {
 	homeOdd := odd.Bookmakers[i].Markets[0].Outcomes[0].Price
 	awayOdd := odd.Bookmakers[j].Markets[0].Outcomes[1].Price
@@ -91,12 +91,12 @@ func (us *UseCasesArbsImpl) findPossibleArbOpportunity(odd domain.Odds,
 
 	for i := 0; i < len(odd.Bookmakers); i++ {
 		if !us.checkIfMarketHasEnoughGames(odd.Bookmakers[i]) {
-			return
+			continue
 		}
 
 		for j := 0; j < len(odd.Bookmakers); j++ {
 			if !us.checkIfMarketHasEnoughGames(odd.Bookmakers[j]) {
-				return
+				continue
 			}
 
 			switch {
@@ -109,7 +109,7 @@ func (us *UseCasesArbsImpl) findPossibleArbOpportunity(odd domain.Odds,
 			case len(odd.Bookmakers[i].Markets[0].Outcomes) == 3 && len(odd.Bookmakers[j].Markets[0].Outcomes) == 3:
 				for k := 0; k < len(odd.Bookmakers); k++ {
 					if !us.checkIfMarketHasEnoughGames(odd.Bookmakers[k]) {
-						return
+						continue
 					}
 
 					if len(odd.Bookmakers[k].Markets[0].Outcomes) == 3 {
